@@ -1,0 +1,45 @@
+Microsoft Windows [Version 10.0.19043.1415]
+(c) Microsoft Corporation. All rights reserved.
+
+D:\Full Stack Open\fullstackopen_osa12-containers\todo-app\todo-backend>docker container ls
+CONTAINER ID   IMAGE          COMMAND                  CREATED             STATUS          PORTS                     NAMES
+5e39c1d0807c   redis:alpine   "docker-entrypoint.s…"   9 minutes ago       Up 8 minutes    0.0.0.0:6379->6379/tcp    todo-backend_redis_1
+0f6b5272c2bf   nginx          "/docker-entrypoint.…"   48 minutes ago      Up 48 minutes   0.0.0.0:8080->80/tcp      elated_joliot
+0d986209260e   mongo          "docker-entrypoint.s…"   About an hour ago   Up 8 minutes    0.0.0.0:3456->27017/tcp   todo-backend_mongo_1
+
+D:\Full Stack Open\fullstackopen_osa12-containers\todo-app\todo-backend>docker exec -it 5e39 bash
+OCI runtime exec failed: exec failed: container_linux.go:380: starting container process caused: exec: "bash": executable file not found in $PATH: unknown
+
+D:\Full Stack Open\fullstackopen_osa12-containers\todo-app\todo-backend>docker exec -it todo-backend_redis_1 bash
+OCI runtime exec failed: exec failed: container_linux.go:380: starting container process caused: exec: "bash": executable file not found in $PATH: unknown
+
+D:\Full Stack Open\fullstackopen_osa12-containers\todo-app\todo-backend>docker exec -it todo-backend_redis_1 redis-cli
+127.0.0.1:6379> GET
+(error) ERR wrong number of arguments for 'get' command
+127.0.0.1:6379> GET added_todos
+"3"
+127.0.0.1:6379> SET added_todos 9001
+OK
+127.0.0.1:6379> GET added_todos
+"9001"
+127.0.0.1:6379> GET added_todos
+"9001"
+127.0.0.1:6379> GET added_todos
+"1"
+127.0.0.1:6379> get
+(error) ERR wrong number of arguments for 'get' command
+127.0.0.1:6379> GET
+(error) ERR wrong number of arguments for 'get' command
+127.0.0.1:6379> GET added_todos
+"1"
+127.0.0.1:6379> SET added_todos 9001
+OK
+127.0.0.1:6379> GET added_todos
+"9001"
+127.0.0.1:6379> GET added_todos
+"9002"
+127.0.0.1:6379> DEL added_todos
+(integer) 1
+127.0.0.1:6379> GET added_todos
+(nil)
+127.0.0.1:6379>

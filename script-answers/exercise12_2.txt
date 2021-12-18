@@ -1,0 +1,25 @@
+C:\Users\Hannu>docker run -it ubuntu bash
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+7b1a6ab2e44d: Pull complete
+Digest: sha256:626ffe58f6e7566e00254b638eb7e0f3b11d4da9675088f4781a50ae288f3322
+Status: Downloaded newer image for ubuntu:latest
+root@d5aa2654d595:/# ls
+bin  boot  dev  etc  home  lib  lib32  lib64  libx32  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+root@d5aa2654d595:/# cd usr
+root@d5aa2654d595:/usr# ls
+bin  games  include  lib  lib32  lib64  libx32  local  sbin  share  src
+root@d5aa2654d595:/usr# mkdir src
+mkdir: cannot create directory 'src': File exists
+root@d5aa2654d595:/usr# cd src
+root@d5aa2654d595:/usr/src# mkdir app
+root@d5aa2654d595:/usr/src# ls
+app
+root@d5aa2654d595:/usr/src# cd app
+root@d5aa2654d595:/usr/src/app# touch index.js
+root@d5aa2654d595:/usr/src/app# ls -a
+.  ..  index.js
+root@d5aa2654d595:/usr/src/app# exit
+exit
+
+C:\Users\Hannu>

@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  app:
+    image: todo-frontend
+    build:
+      context: ./todo-frontend/
+      dockerfile: ./todo-frontend/dev.Dockerfile
+    volumes:
+      - ./todo-frontend/:/usr/src/app
+    ports:
+      - 3000:3000
+    container_name: todo-frontend-dev-full
+    environment:
+        - REACT_APP_BACKEND_URL=http://app:3001
+  
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: the_database
+    volumes:
+      - ./todo-backend/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - ./todo-backend/mongo_data:/data/db
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - 6379:6379
+    command: ['redis-server', '--appendonly', 'yes']
+    volumes:
+      - ./todo-backend/redis_data:/data
+
+  server:
+    image: todo-backend-dev
+    build:
+      context: .
+      dockerfile: ./todo-backend/dev.Dockerfile
+    volumes:
+      - ./todo-backend/:/usr/src/app
+    ports:
+      - 3001:3001   # 3000:3001 to fix back
+    container_name: todo-backend-dev-server
+    environment:
+      - PORT=3001
+      - MONGO_URL=mongodb://the_username:the_password@mongo:27017/the_database
+      - REDIS_URL=redis://redis:6379
+  
+  revproxy:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8000:80
+    container_name: revproxy
+  #docker-compose -f docker-compose.dev.yml up
+  
+  # TO DO:
+  # server is on localhost:3001, app uses localhost:3001 as server url, it should be app:3001
+  # 1. make so that server can be seen from localhost:8000/api/ <-- currently does not work since nginx doenst recognize localhost:3001
+  # 2. set frontend to use app:3001 <-- Currently does not work as frontend uses localhost:3001
+  
+  # https://stackoverflow.com/questions/27912917/how-to-configure-docker-port-mapping-to-use-nginx-as-an-upstream-proxy
