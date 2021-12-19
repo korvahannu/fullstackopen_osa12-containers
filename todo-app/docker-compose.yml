@@ -12,7 +12,7 @@ services:
       - 3000:3000
     container_name: todo-frontend-dev-full
     environment:
-        - REACT_APP_BACKEND_URL=http://app:3001
+        - REACT_APP_BACKEND_URL=http://localhost:8000/api/
   
   mongo:
     image: mongo
@@ -56,11 +56,3 @@ services:
     ports:
       - 8000:80
     container_name: revproxy
-  #docker-compose -f docker-compose.dev.yml up
-  
-  # TO DO:
-  # server is on localhost:3001, app uses localhost:3001 as server url, it should be app:3001
-  # 1. make so that server can be seen from localhost:8000/api/ <-- currently does not work since nginx doenst recognize localhost:3001
-  # 2. set frontend to use app:3001 <-- Currently does not work as frontend uses localhost:3001
-  
-  # https://stackoverflow.com/questions/27912917/how-to-configure-docker-port-mapping-to-use-nginx-as-an-upstream-proxy
